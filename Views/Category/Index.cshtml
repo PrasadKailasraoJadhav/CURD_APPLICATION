@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Category_List</h1>
+
+<div class="container p-4">
+    <div class="row p-3">
+
+        <div class="col-6">
+            <a asp-action="Create" asp-controller="Category">Create New</a>
+        </div>
+
+    </div>
+</div>
+<form asp-controller="Category" asp-action="Index" method="get">
+    <p>
+        Search Here: <input type="text" name="Search" />
+        <input type="submit" value="Search" />
+        <a asp-action="Index">Back to Full List</a>
+    </p>
+</form>
+<table >
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Name", "Index",new{Sort=ViewBag.sort==null? "Asc":(ViewBag.sort=="Asc"? "name_desc": "Asc"),Search=ViewBag.search})
+            </th>
+           
+            <th>
+                DisplayOrder
+            </th>
+            <th>
+                CreateddateTime
+            </th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.DisplayOrder
+                </td>
+                <td>
+                    @item.CreateddateTime
+                </td>
+
+                <td role="group">
+                    <a asp-action="Edit" asp-controller="Category" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-controller="Category" asp-route-id="@item.Id">Delete</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+@{
+    Double TotalPages = ViewBag.TotalPages;
+
+    for (int i = 1; i <= TotalPages; i++)
+    {
+        @Html.ActionLink(i.ToString(),"Index",new{Sort=ViewBag.sort==null? "Asc": ViewBag.Sort,page=i})
+    }
+
+}
